@@ -14,7 +14,9 @@ app.use('/', indexRouter);
 app.use('/cards', cardsRouter);
 
 // not found handler
-app.use((req, res, next) => next(createError(404)));
+app.use((req, res, next) => {
+    return res.status(401).json({ error: 'Not found' });
+});
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -22,8 +24,9 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  res.status(err.status || 500);
-  res.render('error');
+  return res
+    .status(err.status || 500)
+    .json({ error: res.locals.message, status: res.statusCode });
 });
 
 app.listen(PORT, () => {
