@@ -1,5 +1,9 @@
 
-const BASE_URL = 'http://private-264465-litackaapi.apiary-mock.com';
+const BASE_URL = process.env.LITACKA_API_URL;
+
+if (!BASE_URL) {
+    throw new Error('BASE_URL is not set');
+}
 
 class Litacka {
  
