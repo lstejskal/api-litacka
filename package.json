@@ -17,8 +17,10 @@
   "license": "ISC",
   "author": "Lukas Stejskal",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
+    "start": "node app.js",
+    "dev": "NODE_ENV=dev node --watch app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
