@@ -10,7 +10,7 @@ app.use(express.json());
 
 app.use('/', operationalRouter);
 app.use('/cards', cardsRouter);
-
+ 
 // not found handler
 app.use((req, res, next) => {
     return res.status(404).json({ error: 'Not found' });
