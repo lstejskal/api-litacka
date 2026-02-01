@@ -4,20 +4,45 @@ const router = express.Router();
 const { validateApiKey } = require('./utils/authentication');
 const Litacka = require('./models/litacka');
 
-router.get('/:cardNumber/validity', validateApiKey, async (req, res, next) => {
+const getCompositeStatus = (status1, status2) => {
+  if (status1 === 200 && status2 === 200) {
+    return 200;
+  }
+  if (status1 === 200) {
+    return status2;
+  }
+  if (status2 === 200) {
+    return status1;
+  }
+  return status1;
+};
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1);
+  const day = String(date.getDate());
+  return `${day}.${month}.${year}`;
+}
+
+router.get('/:cardNumber', validateApiKey, async (req, res, next) => {
   const { cardNumber } = req.params;
 
-  const result = await Litacka.getValidity(cardNumber);
+  const [cardValidity, cardState] = await Promise.all([
+    Litacka.getValidity(cardNumber),
+    Litacka.getState(cardNumber),
+  ]);
 
-  res.status(result.status).json(result.data);
-});
+  const compositeStatus = getCompositeStatus(cardValidity.status, cardState.status);
 
-router.get('/:cardNumber/state', validateApiKey, async (req, res, next) => {
-  const { cardNumber } = req.params;
+  if (compositeStatus !== 200) {
+    return res.status(compositeStatus);
+  }
 
-  const result = await Litacka.getState(cardNumber);
-
-  res.status(result.status).json(result.data);
+  res.status(compositeStatus).json({
+    validity_end: formatDate(cardValidity.data.validity_end),
+    state_description: cardState.data.state_description,
+  });
 });
 
 module.exports = router;
