@@ -1,0 +1,140 @@
+openapi: 3.0.3
+info:
+  title: Lítačka API
+  description: Jednoduché API používající Lítačka API
+  version: 1.0.0
+  contact:
+    name: Lukas Stejskal
+    url: https://github.com/lstejskal/api-litacka
+
+tags:
+  - name: Operational
+  - name: Cards
+
+paths:
+  /up:
+    get:
+      tags:
+        - Operational
+      summary: GET /up
+      description: Ověřuje, že API je dostupné
+      operationId: healthCheck
+      responses:
+        '200':
+          description: API je dostupné
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: OK
+
+  /cards/{cardNumber}:
+    get:
+      tags:
+        - Cards
+      summary: GET /cards/{cardNumber}
+      description: |
+        Získá agregované informace o Lítačce: datum konce platnosti a aktuální stav.
+
+        Tento endpoint získává data z několika endpointů v Lítačka API a kombinuje je do jedné odpovědi.
+      operationId: getCardInfo
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: cardNumber
+          in: path
+          description: Číslo karty Lítačka
+          required: true
+          schema:
+            type: string
+          example: "1234567890"
+      responses:
+        '200':
+          description: Úspěch - platnost i stav byly úspěšně načteny
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardInfo'
+              examples:
+                success:
+                  summary: Úspěšná odpověď
+                  value:
+                    validity_end: "31.12.2026"
+                    state_description: "Aktivní v držení klienta"
+        '401':
+          description: Neautorizováno - chybí nebo je neplatný API klíč
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                unauthorized:
+                  summary: Chybějící nebo neplatný API klíč
+                  value:
+                    error: "Unauthorized"
+        '404':
+          description: Nenalezeno - číslo karty nebylo nalezeno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                notFound:
+                  summary: Karta nenalezena
+                  value:
+                    error: "Card not found"
+        '500':
+          description: Interní chyba serveru
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                serverError:
+                  summary: Interní chyba serveru
+                  value:
+                    error: "Internal server error"
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: |
+        API klíč pro autentizaci. Klíč je nakonfigurován v .env souboru jako `API_KEY`.
+
+        Všechny endpointy kromě `/up` vyžadují tuto autentizaci.
+
+  schemas:
+    CardInfo:
+      type: object
+      description: Informace o Lítačce
+      required:
+        - validity_end
+        - state_description
+      properties:
+        validity_end:
+          type: string
+          description: Datum konce platnosti karty ve formátu DD.M.YYYY
+          example: "31.12.2026"
+          pattern: '^\d{1,2}\.\d{1,2}\.\d{4}$'
+        state_description:
+          type: string
+          description: Čitelný popis aktuálního stavu karty
+          example: "Aktivní v držení klienta"
+
+    Error:
+      type: object
+      description: Chybová odpověď
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: Popis chybové zprávy
+          example: "Unauthorized"
+        status:
+          type: integer
+          description: HTTP stavový kód (volitelné, může být přítomen v některých chybách)
+          example: 401
