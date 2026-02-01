@@ -1,21 +1,19 @@
 const createError = require('http-errors');
 const express = require('express');
 
-const indexRouter = require('./src/index');
-const cardsRouter = require('./src/cards');
-
-const PORT = process.env.PORT || 3000;
+const operationalRouter = require('./operational');
+const cardsRouter = require('./cards');
 
 const app = express();
 
 app.use(express.json());
 
-app.use('/', indexRouter);
+app.use('/', operationalRouter);
 app.use('/cards', cardsRouter);
 
 // not found handler
 app.use((req, res, next) => {
-    return res.status(401).json({ error: 'Not found' });
+    return res.status(404).json({ error: 'Not found' });
 });
 
 // error handler
@@ -29,6 +27,4 @@ app.use(function(err, req, res, next) {
     .json({ error: res.locals.message, status: res.statusCode });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+module.exports = app;
