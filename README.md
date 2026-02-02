@@ -37,6 +37,8 @@ The application uses environment-specific configuration files. You need to set u
    cp .env.example .env.test
    ```
 
+   PS: most of configuration for tests is currently mocked.
+
 2. **Configure environment variables**
 
    Edit the `.env.dev` (or `.env.test`) file with your settings:
@@ -82,6 +84,20 @@ This will use the `.env.dev` configuration file by default. For specific environ
 NODE_ENV=prod npm start
 ```
 
+### Testing
+
+To run the unit and integration tests:
+
+```bash
+npm run test
+```
+
+To run the tests including code coverage:
+
+```bash
+npm run test:coverage
+```
+
 ### Verify the Server is Running
 
 You can test the API by opening your browser or using curl:
@@ -91,7 +107,7 @@ curl http://localhost:3000/up
 
 ## Documentation
 
-For complete API documentation, see [api.yaml](api.yaml)
+For complete API documentation, see [api.html](api.html)
 
 Convert to HTML:
 ```bash

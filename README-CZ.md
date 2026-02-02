@@ -38,6 +38,8 @@ Aplikace používá konfigurační soubory specifické pro jednotlivá prostřed
    cp .env.example .env.test
    ```
 
+   PS: testovací prostředí používá převážně mocky
+
 2. **Nakonfigurujte proměnné prostředí**
 
    Upravte soubor `.env.dev` (nebo `.env.test`) pro vaše potřeby:
@@ -83,6 +85,20 @@ Tím se standardně použije konfigurační soubor `.env.dev`. Pro konkrétní p
 NODE_ENV=prod npm start
 ```
 
+### Testování
+
+Pro spuštění unit a integračních testů:
+
+```bash
+npm run test
+```
+
+Pro spuštění testů včetně měření code coverage:
+
+```bash
+npm run test:coverage
+```
+
 ### Test API
 
 API můžete otestovat otevřením prohlížeče nebo pomocí curl:
@@ -92,7 +108,7 @@ curl http://localhost:3000/up
 
 ## Dokumentace
 
-Kompletní dokumentace v OpenAPI: [api.yaml](api.yaml)
+Kompletní dokumentace v OpenAPI: [api.html](api.html)
 
 Převod do HTML:
 ```bash
