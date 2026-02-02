@@ -98,6 +98,12 @@ To run the tests including code coverage:
 npm run test:coverage
 ```
 
+To run syntax check:
+
+```bash
+npm run lint
+```
+
 ### Verify the Server is Running
 
 You can test the API by opening your browser or using curl:

@@ -99,6 +99,12 @@ Pro spuštění testů včetně měření code coverage:
 npm run test:coverage
 ```
 
+Pro spuštění kontroly syntaxe:
+
+```bash
+npm run test:coverage
+```
+
 ### Test API
 
 API můžete otestovat otevřením prohlížeče nebo pomocí curl:
