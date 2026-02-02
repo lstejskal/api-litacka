@@ -14,8 +14,7 @@ describe('Litacka Model', () => {
 
   describe('getUrl', () => {
     it('should construct correct URL with path', () => {
-      const path = '/cards/123/validity';
-      const url = Litacka.getUrl(path);
+      const url = Litacka.getUrl('/cards/123/validity');
       expect(url).toBe('http://test-api.example.com/cards/123/validity');
     });
 

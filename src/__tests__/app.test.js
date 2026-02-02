@@ -26,23 +26,6 @@ describe('API Integration Tests', () => {
       jest.clearAllMocks();
     });
 
-    it('should return 401 without API key', async () => {
-      const response = await request(app)
-        .get('/cards/123')
-        .expect(401);
-
-      expect(response.body).toEqual({ error: 'Unauthorized' });
-    });
-
-    it('should return 401 with invalid API key', async () => {
-      const response = await request(app)
-        .get('/cards/123')
-        .set('X-API-Key', 'invalid-key')
-        .expect(401);
-
-      expect(response.body).toEqual({ error: 'Unauthorized' });
-    });
-
     it('should return card data with valid API key', async () => {
       const validityData = { validity_end: '2016-08-12T00:00:00' };
       const stateData = { state_description: 'Aktivní v držení klienta' };
@@ -71,6 +54,23 @@ describe('API Integration Tests', () => {
       expect(response.body.validity_end).toBe('12.8.2016');
       expect(response.body.state_description).toBe('Aktivní v držení klienta');
     });
+  });
+
+  it('should return 401 without API key', async () => {
+    const response = await request(app)
+      .get('/cards/123')
+      .expect(401);
+
+    expect(response.body).toEqual({ error: 'Unauthorized' });
+  });
+
+  it('should return 401 with invalid API key', async () => {
+    const response = await request(app)
+      .get('/cards/123')
+      .set('X-API-Key', 'invalid-key')
+      .expect(401);
+
+    expect(response.body).toEqual({ error: 'Unauthorized' });
   });
 
   describe('404 Handler', () => {
