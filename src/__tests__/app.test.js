@@ -77,7 +77,7 @@ describe('API Integration Tests', () => {
     it('should return 404 for unknown routes', async () => {
       const response = await request(app)
         .get('/unknown-route')
-        .expect(404)
+        .expect(404);
     });
   });
 });

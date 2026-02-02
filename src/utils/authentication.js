@@ -2,7 +2,7 @@
 const API_KEY = process.env.API_KEY;
 
 if (!API_KEY) {
-    throw new Error('API_KEY is not set');
+  throw new Error('API_KEY is not set');
 }
 
 const validateApiKey = (req, res, next) => {
