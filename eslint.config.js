@@ -46,7 +46,6 @@ module.exports = [
         'error',
         'always'
       ],
-      /*
       'no-unused-vars': [
         'error',
         {
@@ -54,7 +53,6 @@ module.exports = [
           'varsIgnorePattern': '^_'
         }
       ]
-      */
     }
   },
   {

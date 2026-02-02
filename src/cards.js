@@ -4,7 +4,7 @@ const router = express.Router();
 const { validateApiKey } = require('./utils/authentication');
 const Litacka = require('./models/litacka');
 
-router.get('/:cardNumber', validateApiKey, async (req, res, next) => {
+router.get('/:cardNumber', validateApiKey, async (req, res) => {
   const { cardNumber } = req.params;
 
   const result = await Litacka.getValidityAndState(cardNumber);

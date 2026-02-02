@@ -75,7 +75,7 @@ describe('API Integration Tests', () => {
 
   describe('404 Handler', () => {
     it('should return 404 for unknown routes', async () => {
-      const response = await request(app)
+      await request(app)
         .get('/unknown-route')
         .expect(404);
     });
