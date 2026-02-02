@@ -16,16 +16,12 @@ pids
 coverage
 *.lcov
 
-# Compiled binary addons (https://nodejs.org/api/addons.html)
-build/Release
-
-# Dependency directories
-node_modules/
-
-# TypeScript cache
+# TypeScript
+dist/
 *.tsbuildinfo
 
-# Optional npm cache directory
+# NPM
+node_modules/
 .npm
 
 # dotenv environment variable files

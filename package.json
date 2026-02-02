@@ -17,10 +17,11 @@
   "license": "ISC",
   "author": "Lukas Stejskal",
   "type": "commonjs",
-  "main": "app.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "NODE_ENV=dev node --watch index.js",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "NODE_ENV=dev ts-node index.ts",
     "test": "NODE_ENV=test jest",
     "test:coverage": "NODE_ENV=test jest --coverage",
     "lint": "eslint .",
@@ -31,18 +32,32 @@
     "express": "^5.2.1"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.2.0",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
     "eslint": "^9.39.2",
     "jest": "^30.2.0",
-    "supertest": "^7.2.2"
+    "supertest": "^7.2.2",
+    "ts-jest": "^29.4.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   },
   "jest": {
     "testEnvironment": "node",
+    "preset": "ts-jest/presets/js-with-ts",
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ],
     "testMatch": [
       "**/__tests__/**/*.js",
       "**/?(*.)+(spec|test).js"
-    ]
+    ],
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    }
   }
 }
