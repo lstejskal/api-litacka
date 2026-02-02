@@ -1,5 +1,5 @@
 
-const formatDate = (dateString) => {
+const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
 
   const year = date.getFullYear();
@@ -9,4 +9,4 @@ const formatDate = (dateString) => {
   return `${day}.${month}.${year}`;
 };
 
-module.exports = { formatDate };
+export { formatDate };

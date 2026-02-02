@@ -1,5 +1,4 @@
-
-const { formatDate } = require('../utils/datetime');
+import { formatDate } from '../utils/datetime';
 
 const BASE_URL = process.env.LITACKA_API_URL;
 
@@ -7,24 +6,44 @@ if (!BASE_URL) {
   throw new Error('BASE_URL is not set');
 }
 
+interface LitackaApiResponse<T> {
+  status: number;
+  data: T;
+}
+
+interface ValidityData {
+  validity_start: string;
+  validity_end: string;
+}
+
+interface StateData {
+  state_id: number;
+  state_description: string;
+}
+
+interface ValidityAndStateData {
+  validity_end: string;
+  state_description: string;
+}
+
 class Litacka {
- 
-  static getUrl(path) {
+
+  static getUrl(path: string): string {
     return `${BASE_URL}${path}`;
   }
 
-  static async getValidity(cardNumber) {
+  static async getValidity(cardNumber: string): Promise<LitackaApiResponse<ValidityData>> {
     const response = await fetch(this.getUrl(`/cards/${cardNumber}/validity`));
-    const data = await response.json();
+    const data = await response.json() as ValidityData;
     return {
       status: response.status,
       data,
     };
   }
 
-  static async getState(cardNumber) {
+  static async getState(cardNumber: string): Promise<LitackaApiResponse<StateData>> {
     const response = await fetch(this.getUrl(`/cards/${cardNumber}/state`));
-    const data = await response.json();
+    const data = await response.json() as StateData;
     return {
       status: response.status,
       data,
@@ -32,7 +51,7 @@ class Litacka {
   }
 
   // PS: keep it public so we can test it
-  static getCompositeStatus(status1, status2) {
+  static getCompositeStatus(status1: number, status2: number): number {
     if (status1 === 200 && status2 === 200) {
       return 200;
     }
@@ -43,9 +62,9 @@ class Litacka {
       return status1;
     }
     return status1;
-  };
+  }
 
-  static async getValidityAndState(cardNumber) {
+  static async getValidityAndState(cardNumber: string): Promise<LitackaApiResponse<ValidityAndStateData>> {
     const [cardValidity, cardState] = await Promise.all([
       this.getValidity(cardNumber),
       this.getState(cardNumber),
@@ -63,4 +82,4 @@ class Litacka {
   }
 }
 
-module.exports = Litacka;
+export = Litacka;
