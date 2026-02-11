@@ -6,6 +6,7 @@ if (!API_KEY) {
   throw new Error('API_KEY is not set');
 }
 
+// [CR] proč je middleware v utils?
 const validateApiKey = (req: Request, res: Response, next: NextFunction): void => {
   const apiKey = req.headers['x-api-key'];
 
