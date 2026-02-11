@@ -26,6 +26,7 @@ interface ValidityAndStateData {
   state_description: string;
 }
 
+// [CR] proč je tohle třída? patří to do modelu?
 class Litacka {
 
   static getUrl(path: string): string {
@@ -34,7 +35,8 @@ class Litacka {
 
   static async getValidity(cardNumber: string): Promise<LitackaApiResponse<ValidityData>> {
     const response = await fetch(this.getUrl(`/cards/${cardNumber}/validity`));
-    const data = await response.json() as ValidityData;
+    const data = await response.json() as ValidityData; // [CR] spadne, pokud není json
+    // [CR] co validace dat?
     return {
       status: response.status,
       data,
@@ -43,7 +45,8 @@ class Litacka {
 
   static async getState(cardNumber: string): Promise<LitackaApiResponse<StateData>> {
     const response = await fetch(this.getUrl(`/cards/${cardNumber}/state`));
-    const data = await response.json() as StateData;
+    const data = await response.json() as StateData; // [CR] spadne, pokud není json
+    // [CR] co validace dat?
     return {
       status: response.status,
       data,
@@ -52,6 +55,7 @@ class Litacka {
 
   // PS: keep it public so we can test it
   static getCompositeStatus(status1: number, status2: number): number {
+    // nešlo by to zjednodušit?
     if (status1 === 200 && status2 === 200) {
       return 200;
     }
@@ -61,6 +65,7 @@ class Litacka {
     if (status2 === 200) {
       return status1;
     }
+    // [CR] opravdu chceme vracet status z externího api?
     return status1;
   }
 
@@ -70,6 +75,7 @@ class Litacka {
       this.getState(cardNumber),
     ]);
 
+    // [CR] dalo by se to řešit i jinak?
     const compositeStatus = this.getCompositeStatus(cardValidity.status, cardState.status);
 
     return {

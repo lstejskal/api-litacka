@@ -125,3 +125,16 @@ redocly build-docs api.yaml --output api.html
 ## Podílení se na vývoji
 
 Hlášení chyb a pull requesty jsou vítány: https://github.com/lstejskal/api-litacka/issues
+
+
+
+[CR]
+- chybí příkaz pro build
+- endpointy fungují dle zadání
+- trochu nesrozumitelná struktura souborů
+  - routery nebo controllery? 
+  - patří auth do utils?
+- testy v js?
+  - jsou to unit nebo integrační testy?
+- logování?
+- docker?

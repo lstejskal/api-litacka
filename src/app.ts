@@ -8,7 +8,7 @@ const app: Express = express();
 app.use(express.json());
 
 app.use('/', operationalRouter);
-app.use('/cards', cardsRouter);
+app.use('/cards', cardsRouter); // [CR] proč není definováno tady?
 
 // not found handler
 app.use((req: Request, res: Response) => {
